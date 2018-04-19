@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">AutoSudoku</string>
+
+    <string name="icon">Icon</string>
+
+    <string name="start_game">Start game</string>
+    <string name="difficulty_easy">easy</string>
+    <string name="difficulty_middle">middle</string>
+    <string name="difficulty_hard">hard</string>
+    <string name="Statistic">Statistic</string>
+    <string name="options">Options</string>
+
+    <string name="pen">Pen</string>
+    <string name="pencil">Pencil</string>
+
+    <string name="hint">Hint</string>
+    <string name="solution">Solution</string>
+    <string name="one_more">One more</string>
+    <string name="menu">Menu</string>
+
+</resources>
