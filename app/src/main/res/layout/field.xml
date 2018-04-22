@@ -9,15 +9,15 @@
     android:clipToPadding="false"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/sell"
+    <ImageButton
+        android:id="@+id/imageButton"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/small_borders"
-        android:gravity="center"
-        android:text="!"
-        android:textSize="20sp"
-        app:layout_aspectRatio="100%"></TextView>
+        android:layout_height="286dp"
+        app:srcCompat="@drawable/big_borders" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/big_borders" />
 </LinearLayout>

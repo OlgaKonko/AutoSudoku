@@ -71,10 +71,9 @@ public class Sudoku {
         int xSquare = (x/3)*3;
         int ySquare = (y/3)*3;
         boolean repeat = false;
-
+        System.out.println ("For "+x+" "+y);
         for (int i =0; i<SUDOKU_SIZE; i++){
-
-            if ((field[x][i]==number) || (field[i][y]==number) || (field[xSquare+i%3][ySquare+i%3] == number)){
+            if ((field[x][i]==number) || (field[i][y]==number) || (field[xSquare+i%3][ySquare+i/3] == number)){
                repeat = true;}
 
 

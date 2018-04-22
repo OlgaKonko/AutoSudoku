@@ -1,50 +1,81 @@
 package koshon.com.autosudoku;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.support.constraint.ConstraintLayout;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
-import static koshon.com.autosudoku.Adapter.takeNumbers;
-import static koshon.com.autosudoku.Adapter.takeSquare;
+import koshon.com.autosudoku.adapter.model.SudokuSolutions;
+import koshon.com.autosudoku.field.Field;
+import koshon.com.autosudoku.field.MoveListener;
+import koshon.com.autosudoku.field.NumbersField;
+import koshon.com.autosudoku.field.TableButton;
+import koshon.com.autosudoku.sudoku_generator.model.Sudoku;
+
+import static koshon.com.autosudoku.sudoku_generator.SudokuGenerator.generateSudoku;
 
 public class MainActivity extends Activity {
-    GridView gvMain;
-    ArrayAdapter<String> adapter;
-   // ArrayAdapter<GridView> gridAdapter;
-    GridView[] blocks;
-    static int BLOCKS_NUMBER = 9;
-    /** Called when the activity is first created. */
+    Field field;
+    NumbersField numbersField;
+int wight;
+int height;
+    ImageButton penButton;
+    ImageButton pencilButton;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initGrid();
-        //GridAdapter gridAdapter = new GridAdapter(this,  R.id.square_field, blocks);
-        ///gridAdapter= new ArrayAdapter<>(this, R.layout.square, R.id.square_field, blocks);
-        //gvMain = findViewById(R.id.sudoku_field);
-        //gvMain.setAdapter(gridAdapter);
-        //adjustGridView();
+        setTableSize();
+        field = findViewById(R.id.sudokuField);
+        field.drawField(wight);
+        field.fillField();
+        numbersField = findViewById(R.id.numbersField);
+        numbersField.drawField(wight);
+        setSized();
+
+        penButton = findViewById(R.id.pen);
+        pencilButton = findViewById(R.id.pencil);
+
     }
 
-    private void initBlocks(){
-        blocks = new GridView[BLOCKS_NUMBER];
-        GridView blockView;
-        for (int index = 0; index<BLOCKS_NUMBER; index++){
-            String[] data = takeSquare(index);
-            adapter = new ArrayAdapter<>(this, R.layout.field, R.id.sell, data);
-            blockView = new GridView(this);
-            blockView.setAdapter(adapter);
-            blocks[index] = blockView;
+    private void setSized(){
+        LinearLayout topLayout = findViewById(R.id.top);
+        LinearLayout ceterLayout = findViewById(R.id.center);
+        int paddings = field.getPaddingTop()+ field.getPaddingBottom();
+        ceterLayout.getLayoutParams().height = wight+paddings;
+        ceterLayout.getLayoutParams().width = wight;
+        topLayout.getLayoutParams().height = (height-wight)/6+paddings;
+    }
+
+
+    private void setTableSize() {
+        Point size = new Point();
+        WindowManager w = getWindowManager();
+        w.getDefaultDisplay().getSize(size);
+        wight = size.x;
+        height = size.y;
+    }
+
+    public void changeTool(View view) {
+        if ((view == penButton)&& !field.usePen){
+            field.usePen = true;
+            pencilButton.setBackgroundResource(R.drawable.no_fill);
+            penButton.setBackgroundResource(R.drawable.set_aura);
         }
-    }
-    private void initGrid(){
-        ArrayAdapter<String> gridAdapter = new ArrayAdapter<>(this, R.layout.field, R.id.sell, takeNumbers() );
-        gvMain = findViewById(R.id.sudoku_field);
-        gvMain.setAdapter(gridAdapter);
-    }
-    private void adjustGridView() {
-
+        else if ((view == pencilButton)&& field.usePen){
+            field.usePen = false;
+            pencilButton.setBackgroundResource(R.drawable.set_aura);
+            penButton.setBackgroundResource(R.drawable.no_fill);
+        }
     }
 }

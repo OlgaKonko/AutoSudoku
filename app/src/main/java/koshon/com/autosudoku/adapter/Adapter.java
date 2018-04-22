@@ -1,4 +1,4 @@
-package koshon.com.autosudoku;
+package koshon.com.autosudoku.adapter;
 
 import static koshon.com.autosudoku.sudoku_generator.constants.Constants.SUDOKU_SIZE;
 
