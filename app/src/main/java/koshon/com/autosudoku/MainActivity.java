@@ -25,7 +25,7 @@ import static koshon.com.autosudoku.sudoku_generator.SudokuGenerator.generateSud
 
 public class MainActivity extends Activity {
     Field field;
-    NumbersField numbersField;
+    public static NumbersField numbersField;
 int wight;
 int height;
     ImageButton penButton;
@@ -67,13 +67,13 @@ int height;
     }
 
     public void changeTool(View view) {
-        if ((view == penButton)&& !field.usePen){
-            field.usePen = true;
+        if ((view == penButton)&& !Field.usePen){
+            Field.usePen = true;
             pencilButton.setBackgroundResource(R.drawable.no_fill);
             penButton.setBackgroundResource(R.drawable.set_aura);
         }
-        else if ((view == pencilButton)&& field.usePen){
-            field.usePen = false;
+        else if ((view == pencilButton)&& Field.usePen){
+            Field.usePen = false;
             pencilButton.setBackgroundResource(R.drawable.set_aura);
             penButton.setBackgroundResource(R.drawable.no_fill);
         }

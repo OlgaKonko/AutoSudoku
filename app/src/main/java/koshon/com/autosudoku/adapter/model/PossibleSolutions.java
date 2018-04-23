@@ -15,7 +15,7 @@ public class PossibleSolutions {
     public PossibleSolutions(int solution){
         if (solution!=0){
         solved = true;
-        this.solution = solution;
+        this.solution = solution-1;
         }
         else
         {
@@ -23,6 +23,24 @@ public class PossibleSolutions {
         }
         setSolutions();
 
+    }
+
+    public void setSolution(int number, boolean pen){
+        if (solutions[number] == IMPOSSIBLE){
+
+        if (pen){
+            for (int i = 0; i<SUDOKU_SIZE; i++){
+                 solutions[i] = IMPOSSIBLE;
+        }
+        solution=number;
+            solved = true;
+    }
+    solutions[number]=POSSIBLE;
+    }
+    else {
+            solutions[number] = IMPOSSIBLE;
+            solved = false;
+        }
     }
 
     public boolean checkIfSolved(){
@@ -49,11 +67,11 @@ public class PossibleSolutions {
     private void setSolutions(){
         solutions = new int[SUDOKU_SIZE];
         for (int i = 0; i<SUDOKU_SIZE; i++){
-            solutions[i]=solved?IMPOSSIBLE:POSSIBLE;
+            solutions[i]=IMPOSSIBLE;
         }
 
         if (solved){
-            solutions[solution-1]=POSSIBLE;
+            solutions[solution]=POSSIBLE;
         }
     }
 }

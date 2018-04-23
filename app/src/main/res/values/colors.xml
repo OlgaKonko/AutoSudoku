@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#ff4081</color>
     <color name="leather">#6c310c</color>
-    <color name="set_color">#879c9fff</color>
+    <color name="set_color">#37ffe800</color>
+    <color name="given_color">#649c9fff</color>
 </resources>

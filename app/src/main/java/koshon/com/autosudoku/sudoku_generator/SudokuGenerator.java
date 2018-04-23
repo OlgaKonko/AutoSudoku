@@ -12,8 +12,8 @@ public class SudokuGenerator {
         return compliteSudoku(sudoku);
     }
     public static Sudoku compliteSudoku(Sudoku sudoku){
-        //SudokuCleaner cleaner = new SudokuCleaner(sudoku);
-        //cleaner.clearSells();
+        SudokuCleaner cleaner = new SudokuCleaner(sudoku);
+        cleaner.clearSells();
         return sudoku;
     }
 

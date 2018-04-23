@@ -15,28 +15,47 @@ import android.widget.TableRow;
 import koshon.com.autosudoku.R;
 import koshon.com.autosudoku.adapter.model.PossibleSolutions;
 
+import static koshon.com.autosudoku.adapter.model.CurrentSudoku.currentSudoku;
+
 
 @SuppressLint("AppCompatCustomView")
 public class TableButton extends TableLayout {
     public Button[] buttons;
+    public int x;
+    public int y;
     private static int SELLS_SIZE = 3;
     private static int BLOCK_SIZE = SELLS_SIZE*SELLS_SIZE;
     private int sellSize;
     private Button number;
-    private boolean sellValueIsGiven;
+    public boolean sellValueIsGiven=false;
     private boolean solved;
     private boolean start;
-    private boolean gridInited;
+    private boolean gridInited = false;
     private int size;
+    MoveListener listener;
 
-    public TableButton(Context context) {
+    public TableButton(Context context, int x, int y) {
         super(context);
+        this.x=x;
+        this.y=y;
+    }
+    public void refresh(){
+        setSolutions(currentSudoku.field[x][y], false);
     }
 
     public void solve (int solution, boolean start){
         this.start = start;
         number.setVisibility(VISIBLE);
-        number.setText(String.valueOf( solution));
+        if (solution ==0){
+            number.setText("");
+        }
+        else{
+        number.setText(String.valueOf( solution+1));
+            if (start){
+                sellValueIsGiven = true;
+                number.setBackgroundResource(R.color.given_color);
+            }
+        }
         if (gridInited){
         for (int index = 0; index < BLOCK_SIZE; index++) {
             System.out.println("!!!"+index);
@@ -46,19 +65,32 @@ public class TableButton extends TableLayout {
         }
     }
 
+    public void setOnClickListener(MoveListener listener){
+        this.listener = listener;
+    }
 
-    public void setSolutions(PossibleSolutions possibleSolutions, boolean start, boolean pensil){
+
+    public void setSolutions(PossibleSolutions possibleSolutions, boolean start){
         
         if  (possibleSolutions.solved){
             solve(possibleSolutions.solution, start);
         }
         else {
-            if (pensil){
+            if (!Field.usePen){
                 initGrid();
+                number.setVisibility(INVISIBLE);
+                number.getLayoutParams().height = 0;
             for (int index = 0; index < BLOCK_SIZE; index++) {
+                buttons[index].setVisibility(VISIBLE);
                 if (possibleSolutions.solutions[index] == VISIBLE){
-                buttons[index].setText(index+1);}
+                buttons[index].setText(String.valueOf( index+1));}
+                else {
+
+                }buttons[index].setText("");
             }
+            }
+            else {
+                solve(0, start);
             }
         }
     }
@@ -69,6 +101,7 @@ public class TableButton extends TableLayout {
         this.getLayoutParams().height = size;
         sellSize = size/SELLS_SIZE;
         number = new Button(this.getContext());
+        number.setOnClickListener(listener);
         this.addView(number, new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT));
         number.getLayoutParams().width = size;
@@ -93,6 +126,7 @@ public class TableButton extends TableLayout {
                     createButton(index, row);
                 }
             }
+            gridInited = true;
         }
     }
 
@@ -101,7 +135,7 @@ public class TableButton extends TableLayout {
         Button button = new Button(this.getContext());
         buttons[index] = button;
         button.setBackgroundResource(R.drawable.light_fill);
-
+        button.setOnClickListener(listener);
         row.addView(button, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
 

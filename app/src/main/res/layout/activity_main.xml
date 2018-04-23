@@ -5,7 +5,6 @@
     android:id="@+id/game_field"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/paper"
     tools:context="koshon.com.autosudoku.MainActivity">
 
     <LinearLayout
@@ -92,7 +91,7 @@
                 android:background="@drawable/set_aura"
                 android:onClick="changeTool"
                 android:scaleType="fitCenter"
-                android:src="@drawable/pen" />
+                android:src="@mipmap/ic_launcher" />
 
             <koshon.com.autosudoku.field.NumbersField
                 android:id="@+id/numbersField"
@@ -100,6 +99,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center|fill"
                 android:showDividers="middle"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
                 android:background="@drawable/no_fill"
                 android:onClick="changeTool"
                 android:scaleType="fitCenter"
-                android:src="@drawable/pencil" />
+                android:src="@mipmap/ic_launcher_round" />
 
         </LinearLayout>
 

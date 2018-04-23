@@ -14,6 +14,10 @@ public class SudokuSolutions {
         startFill();
     }
 
+    public void addSolution (int x, int y, int number, boolean pen){
+        field[x][y].setSolution(number, pen);
+    }
+
     private void startFill(){
         field = new PossibleSolutions[SUDOKU_SIZE][SUDOKU_SIZE];
         for (int x =0; x<SUDOKU_SIZE; x++)

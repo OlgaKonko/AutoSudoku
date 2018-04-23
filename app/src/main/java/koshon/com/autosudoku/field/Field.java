@@ -13,13 +13,15 @@ import static koshon.com.autosudoku.adapter.model.CurrentSudoku.currentSudoku;
 
 public class Field extends TableLayout {
     public TableButton[][] buttons;
+    NumbersField numbersField;
+    public static TableButton lastButton;
     private int FIELD_SIZE = 9;
     private int LINES_SIZE = 4;
     private int LINE_SCALE = 150;
     private int lineSize;
     private int size;
     private int tableSize;
-    public boolean usePen;
+    public static boolean usePen = true;
 
     public Field(Context context) {
         super(context);
@@ -31,12 +33,13 @@ public class Field extends TableLayout {
     public void fillField (){
         for (int x = 0; x < FIELD_SIZE; x++) {
             for (int y = 0; y < FIELD_SIZE; y++) {
-            buttons[x][y].setSolutions(currentSudoku.field[x][y], true, false);
+            buttons[x][y].setSolutions(currentSudoku.field[x][y], true);
             }
 
     }}
 
     public void drawField(int layoutSize) {
+        numbersField = findViewById(R.id.numbersField);
         usePen = true;
         this.tableSize = layoutSize-(this.getPaddingLeft()+this.getPaddingRight());
         buttons = new TableButton[FIELD_SIZE][FIELD_SIZE];
@@ -62,10 +65,10 @@ public class Field extends TableLayout {
         if (y%3 == 0){
             createLine(row, lineSize, size);
         }
-        TableButton button = new TableButton(this.getContext());
+        TableButton button = new TableButton(this.getContext(),x,y);
         buttons[x][y] = button;
         button.setImageResource(R.drawable.shape);
-        button.setOnClickListener(new MoveListener(x, y));
+        button.setOnClickListener(new MoveListener(x, y, button));
         row.addView(button, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
         button.fillSell(size);

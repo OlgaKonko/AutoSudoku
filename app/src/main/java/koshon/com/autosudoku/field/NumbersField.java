@@ -51,7 +51,7 @@ public class NumbersField extends TableLayout {
         Button button = new Button(this.getContext());
         buttons[x][y] = button;
         button.setBackgroundResource(R.drawable.shape);
-        button.setOnClickListener(new MoveListener(x, y));
+        button.setOnClickListener(new ChoseNumberListener(x*FIELD_SIZE+y));
         row.addView(button, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
         button.getLayoutParams().width = size;
