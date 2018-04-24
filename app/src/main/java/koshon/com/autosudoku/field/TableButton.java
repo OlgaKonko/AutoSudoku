@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -31,8 +29,10 @@ public class TableButton extends TableLayout {
     private boolean solved;
     private boolean start;
     private boolean gridInited = false;
+    private boolean gridShowed = false;
     private int size;
     MoveListener listener;
+    float textSize;
 
     public TableButton(Context context, int x, int y) {
         super(context);
@@ -43,9 +43,11 @@ public class TableButton extends TableLayout {
         setSolutions(currentSudoku.field[x][y], false);
     }
 
-    public void solve (int solution, boolean start){
+    public void markPen(int solution, boolean start){
+
+       changeView(false);
         this.start = start;
-        number.setVisibility(VISIBLE);
+
         if (solution ==0){
             number.setText("");
         }
@@ -56,14 +58,41 @@ public class TableButton extends TableLayout {
                 number.setBackgroundResource(R.color.given_color);
             }
         }
-        if (gridInited){
-        for (int index = 0; index < BLOCK_SIZE; index++) {
-            System.out.println("!!!"+index);
-            buttons[index].getLayoutParams().height = 0;
-            //buttons[index].setVisibility(INVISIBLE);
+    }
+
+    public void markPensil (PossibleSolutions possibleSolutions){
+            initGrid();
+            changeView(true);
+            for (int index = 0; index < BLOCK_SIZE; index++) {
+                if (possibleSolutions.solutions[index] == 1) {
+                    buttons[index].setText(String.valueOf(index + 1));
+                    buttons[index].setBackgroundResource(R.drawable.selected_number);
+                } else {
+                    buttons[index].setText("!");
+                    buttons[index].setBackgroundResource(R.drawable.gray_shape);
+                }
+            }
+    }
+
+    private void changeView(boolean showGrid){
+        if (showGrid && !gridShowed){
+            gridShowed = true;
+            number.getLayoutParams().height = 0;
+
+            for (int index = 0; index < BLOCK_SIZE; index++) {
+                buttons[index].getLayoutParams().height = sellSize;
             }
         }
-    }
+        else{
+            if (!showGrid && gridShowed){
+                gridShowed = false;
+                number.getLayoutParams().height = size;
+                for (int index = 0; index < BLOCK_SIZE; index++) {
+                    buttons[index].getLayoutParams().height = 0;
+            }
+        }
+
+    }}
 
     public void setOnClickListener(MoveListener listener){
         this.listener = listener;
@@ -71,37 +100,28 @@ public class TableButton extends TableLayout {
 
 
     public void setSolutions(PossibleSolutions possibleSolutions, boolean start){
-        
         if  (possibleSolutions.solved){
-            solve(possibleSolutions.solution, start);
+            markPen(possibleSolutions.solution, start);
         }
         else {
             if (!Field.usePen){
-                initGrid();
-                number.setVisibility(INVISIBLE);
-                number.getLayoutParams().height = 0;
-            for (int index = 0; index < BLOCK_SIZE; index++) {
-                buttons[index].setVisibility(VISIBLE);
-                if (possibleSolutions.solutions[index] == VISIBLE){
-                buttons[index].setText(String.valueOf( index+1));}
-                else {
-
-                }buttons[index].setText("");
-            }
+                markPensil(possibleSolutions);
             }
             else {
-                solve(0, start);
+                markPen(0, start);
             }
         }
     }
 
     public void fillSell(int size){
-
+        this.size = size;
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;
         sellSize = size/SELLS_SIZE;
         number = new Button(this.getContext());
         number.setOnClickListener(listener);
+      //  number.setTextSize(TypedValue.COMPLEX_UNIT_DIP,number.getTextSize()/9 );
+        textSize = number.getTextSize()/12;
         this.addView(number, new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT));
         number.getLayoutParams().width = size;
@@ -111,7 +131,7 @@ public class TableButton extends TableLayout {
     }
 
     public void initGrid(){
-        number.setVisibility(INVISIBLE);
+       // number.setVisibility(INVISIBLE);
         if (!gridInited){
             buttons = new Button[BLOCK_SIZE];
             TableRow row =new TableRow(this.getContext());
@@ -136,6 +156,8 @@ public class TableButton extends TableLayout {
         buttons[index] = button;
         button.setBackgroundResource(R.drawable.light_fill);
         button.setOnClickListener(listener);
+        //button.setTextSize(number.getTextSize()/9 );
+        button.setTextSize(TypedValue.COMPLEX_UNIT_DIP,textSize );
         row.addView(button, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
 

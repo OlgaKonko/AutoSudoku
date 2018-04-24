@@ -24,7 +24,7 @@ public class MoveListener implements View.OnClickListener {
         else {
             MainActivity.numbersField.setVisibility(View.VISIBLE);
             tableButton.setBackgroundResource(R.drawable.selected_sell);
-            if (Field.lastButton!= null &&! Field.lastButton.sellValueIsGiven){
+            if (Field.lastButton!= null &&! Field.lastButton.sellValueIsGiven && Field.lastButton!=tableButton){
 
             Field.lastButton.setBackgroundResource(R.drawable.shape);
             }
