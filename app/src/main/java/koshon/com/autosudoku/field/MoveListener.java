@@ -5,6 +5,8 @@ import android.view.View;
 import koshon.com.autosudoku.MainActivity;
 import koshon.com.autosudoku.R;
 
+import static koshon.com.autosudoku.field.constants.Options.lastButton;
+
 
 public class MoveListener implements View.OnClickListener {
     private int x = 0;
@@ -18,17 +20,16 @@ public class MoveListener implements View.OnClickListener {
     }
 
     public void onClick(View view) {
-        if (tableButton.sellValueIsGiven){
+        if (tableButton.sellValueIsGiven) {
             MainActivity.numbersField.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             MainActivity.numbersField.setVisibility(View.VISIBLE);
             tableButton.setBackgroundResource(R.drawable.selected_sell);
-            if (Field.lastButton!= null &&! Field.lastButton.sellValueIsGiven && Field.lastButton!=tableButton){
+            if (lastButton != null && !lastButton.sellValueIsGiven && lastButton != tableButton) {
 
-            Field.lastButton.setBackgroundResource(R.drawable.shape);
+                lastButton.setBackgroundResource(R.drawable.shape);
             }
-            Field.lastButton = tableButton;
+            lastButton = tableButton;
         }
     }
 }

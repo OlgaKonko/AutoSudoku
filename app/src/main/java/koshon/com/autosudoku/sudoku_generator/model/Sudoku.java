@@ -19,20 +19,21 @@ public class Sudoku {
         correctFill();
     }
 
-    public int get(int x, int y){
+    public int get(int x, int y) {
         return field[x][y];
     }
-    public void set(int x, int y, int number){
+
+    public void set(int x, int y, int number) {
         field[x][y] = number;
     }
 
-    public void clearSell(int x, int y){
+    public void clearSell(int x, int y) {
         field[x][y] = 0;
     }
 
-    private void correctFill(){
+    private void correctFill() {
         isCorrectSudoku = false;
-        while (!isCorrectSudoku){
+        while (!isCorrectSudoku) {
             isCorrectSudoku = true;
             realSeed++;
             random.setSeed(realSeed);
@@ -40,26 +41,26 @@ public class Sudoku {
         }
     }
 
-    private void fill(){
+    private void fill() {
         startFill();
 
-        for (int x =0; x<SUDOKU_SIZE; x++)
-            for (int y =0; y<SUDOKU_SIZE; y++){
-            field[x][y] = findNumber(x,y);
+        for (int x = 0; x < SUDOKU_SIZE; x++)
+            for (int y = 0; y < SUDOKU_SIZE; y++) {
+                field[x][y] = findNumber(x, y);
             }
     }
 
-    private int findNumber(int x, int y){
-        int number = random.nextInt(SUDOKU_SIZE)+1;
+    private int findNumber(int x, int y) {
+        int number = random.nextInt(SUDOKU_SIZE) + 1;
         int count = 0;
-        while (isNumberRepeat(x,y,number) && count<=SUDOKU_SIZE){
+        while (isNumberRepeat(x, y, number) && count <= SUDOKU_SIZE) {
             count++;
             number++;
-            if (number>SUDOKU_SIZE)
-                number=1;
+            if (number > SUDOKU_SIZE)
+                number = 1;
         }
 
-        if (count>SUDOKU_SIZE){
+        if (count > SUDOKU_SIZE) {
             isCorrectSudoku = false;
             return -1;
         }
@@ -67,14 +68,15 @@ public class Sudoku {
         return number;
     }
 
-    private boolean isNumberRepeat(int x, int y, int number){
-        int xSquare = (x/3)*3;
-        int ySquare = (y/3)*3;
+    private boolean isNumberRepeat(int x, int y, int number) {
+        int xSquare = (x / 3) * 3;
+        int ySquare = (y / 3) * 3;
         boolean repeat = false;
-        System.out.println ("For "+x+" "+y);
-        for (int i =0; i<SUDOKU_SIZE; i++){
-            if ((field[x][i]==number) || (field[i][y]==number) || (field[xSquare+i%3][ySquare+i/3] == number)){
-               repeat = true;}
+        System.out.println("For " + x + " " + y);
+        for (int i = 0; i < SUDOKU_SIZE; i++) {
+            if ((field[x][i] == number) || (field[i][y] == number) || (field[xSquare + i % 3][ySquare + i / 3] == number)) {
+                repeat = true;
+            }
 
 
         }
@@ -82,9 +84,9 @@ public class Sudoku {
         return repeat;
     }
 
-    public void startFill(){
-        for (int x =0; x<SUDOKU_SIZE; x++)
-            for (int y =0; y<SUDOKU_SIZE; y++){
+    public void startFill() {
+        for (int x = 0; x < SUDOKU_SIZE; x++)
+            for (int y = 0; y < SUDOKU_SIZE; y++) {
                 field[x][y] = 0;
             }
     }

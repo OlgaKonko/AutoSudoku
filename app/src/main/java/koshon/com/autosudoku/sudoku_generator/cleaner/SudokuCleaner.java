@@ -12,7 +12,7 @@ public class SudokuCleaner {
     private Sudoku sudoku;
     private Random random;
     private Sell deletedSell;
-private int MAX_TRY = 81;
+    private int MAX_TRY = 81;
 
     public SudokuCleaner(Sudoku sudoku) {
         this.sudoku = sudoku;
@@ -20,33 +20,32 @@ private int MAX_TRY = 81;
 
     }
 
-    public void clearSells(){
+    public void clearSells() {
         int tries = 0;
-     while (canBeSolved(sudoku) && tries<MAX_TRY){
-        findSellToDelete();
-         sudoku.clearSell(deletedSell.x,deletedSell.y);
-        if (!canBeSolved(sudoku)){
-            refillSell();
-            tries++;
-         }
-         else {
-            tries=0;
+        while (canBeSolved(sudoku) && tries < MAX_TRY) {
+            findSellToDelete();
+            sudoku.clearSell(deletedSell.x, deletedSell.y);
+            if (!canBeSolved(sudoku)) {
+                refillSell();
+                tries++;
+            } else {
+                tries = 0;
+            }
         }
     }
-    }
 
-    private void refillSell(){
+    private void refillSell() {
         sudoku.set(deletedSell.x, deletedSell.y, deletedSell.number);
     }
 
-    private void findSellToDelete(){
+    private void findSellToDelete() {
         int x;
         int y;
         do {
-            x=random.nextInt(SUDOKU_SIZE);
-            y=random.nextInt(SUDOKU_SIZE);
+            x = random.nextInt(SUDOKU_SIZE);
+            y = random.nextInt(SUDOKU_SIZE);
         }
-        while (sudoku.get(x,y)==0);
-        deletedSell = new Sell(x,y, sudoku.get(x,y));
+        while (sudoku.get(x, y) == 0);
+        deletedSell = new Sell(x, y, sudoku.get(x, y));
     }
 }

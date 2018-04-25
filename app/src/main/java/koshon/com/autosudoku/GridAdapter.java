@@ -7,13 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-public class GridAdapter  extends android.widget.BaseAdapter {
+public class GridAdapter extends android.widget.BaseAdapter {
     GridView[] blocks;
     Context context;
     int id;
+
     public GridAdapter(Context context, int id, GridView[] blocks) {
         this.blocks = blocks;
-        this.context =context;
+        this.context = context;
         this.id = id;
 
     }
@@ -33,9 +34,10 @@ public class GridAdapter  extends android.widget.BaseAdapter {
         return blocks[i].getId();
     }
 
-class ViewHolder{
+    class ViewHolder {
         GridView block;
-        ViewHolder(View v){
+
+        ViewHolder(View v) {
             block = v.findViewById(id);
         }
 
@@ -45,13 +47,12 @@ class ViewHolder{
     public View getView(int i, View view, ViewGroup viewGroup) {
         View row = view;
         ViewHolder holder = null;
-        if (row==null){
+        if (row == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.square, viewGroup, false);
             holder = new ViewHolder(row);
             row.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) row.getTag();
         }
         holder.block = blocks[i];
