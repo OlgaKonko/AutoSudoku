@@ -7,37 +7,53 @@ public class PossibleSolutions {
     public int[] solutions;
     public boolean solved;
     public int solution;
+    public boolean usePen;
 
 
-    private static int POSSIBLE = 1;
-    private static int IMPOSSIBLE = 0;
+    private static int MARKED = 1;
+    private static int UNMARKED = 0;
 
     public PossibleSolutions(int solution) {
+        usePen = true;
         if (solution != 0) {
             solved = true;
-            this.solution = solution - 1;
+            this.solution = solution;
         } else {
             solved = false;
+            this.solution =0;
         }
         setSolutions();
 
     }
 
     public void setSolution(int number, boolean pen) {
-        if (solutions[number] == IMPOSSIBLE) {
+        usePen = pen;
+        if (pen){
+            if (solution== number)
+                solution = UNMARKED;
+            else
+                solution=number+1;
+        }
+        else
+            if (solutions[number] == UNMARKED)
+                solutions[number] = MARKED;
+        else solutions[number]= UNMARKED;
+
+        /*
+        if (solutions[number] == UNMARKED) {
 
             if (pen) {
                 for (int i = 0; i < SUDOKU_SIZE; i++) {
-                    solutions[i] = IMPOSSIBLE;
+                    solutions[i] = UNMARKED;
                 }
                 solution = number;
                 solved = true;
             }
-            solutions[number] = POSSIBLE;
+            solutions[number] = MARKED;
         } else {
-            solutions[number] = IMPOSSIBLE;
+            solutions[number] = UNMARKED;
             solved = false;
-        }
+        }*/
     }
 
     public boolean checkIfSolved() {
@@ -45,7 +61,7 @@ public class PossibleSolutions {
             int possibleSolutionsCount = 0;
             int possibleSolution = -1;
             for (int i = 0; i < SUDOKU_SIZE; i++) {
-                if (solutions[i] == POSSIBLE) {
+                if (solutions[i] == MARKED) {
                     possibleSolutionsCount++;
                     possibleSolution = i + 1;
                 }
@@ -59,17 +75,13 @@ public class PossibleSolutions {
     }
 
     public void markImpossible(int number) {
-        solutions[number - 1] = IMPOSSIBLE;
+        solutions[number - 1] = UNMARKED;
     }
 
     private void setSolutions() {
         solutions = new int[SUDOKU_SIZE];
         for (int i = 0; i < SUDOKU_SIZE; i++) {
-            solutions[i] = IMPOSSIBLE;
-        }
-
-        if (solved) {
-            solutions[solution] = POSSIBLE;
+            solutions[i] = UNMARKED;
         }
     }
 }

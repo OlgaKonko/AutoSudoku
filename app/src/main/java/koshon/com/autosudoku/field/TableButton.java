@@ -23,15 +23,16 @@ import static koshon.com.autosudoku.field.constants.Sizes.game_field_sell_size;
 
 @SuppressLint("AppCompatCustomView")
 public class TableButton extends TableLayout {
-    public Button[] buttons;
+    public PencilNumbers buttons;
     private Button number;
+    TableRow row;
     public int x;
     public int y;
     public boolean sellValueIsGiven = false;
 
     private boolean solved;
 
-    private boolean gridInited = false;
+   // private boolean gridInited = false;
     private boolean gridShowed = false;
 
     MoveListener listener;
@@ -47,15 +48,31 @@ public class TableButton extends TableLayout {
         setSolutions(currentSudoku.field[x][y], false);
     }
 
-    public void markPen(int solution, boolean start) {
 
+    public void setSolutions(PossibleSolutions possibleSolutions, boolean start) {
+        if (possibleSolutions.solved) {
+            System.out.println("!!!! try to mark solution pen "+possibleSolutions.solution);
+            markPen(possibleSolutions.solution, start);
+        } else {
+            if (!usePen) {
+                System.out.println("!!!! try to mark pensil");
+                markPensil(possibleSolutions);
+            } else {
+                System.out.println("!!!! try to mark pen"+possibleSolutions.solution);
+                markPen(possibleSolutions.solution, start);
+            }
+        }
+    }
+
+    public void markPen(int solution, boolean start) {
+        System.out.println("!!!! mark pen");
         changeView(false);
         //this.start = start;
 
         if (solution == 0) {
             number.setText("");
         } else {
-            number.setText(String.valueOf(solution + 1));
+            number.setText(String.valueOf(solution));
             if (start) {
                 sellValueIsGiven = true;
                 number.setBackgroundResource(R.color.given_color);
@@ -64,21 +81,35 @@ public class TableButton extends TableLayout {
     }
 
     public void markPensil(PossibleSolutions possibleSolutions) {
-        initGrid();
+        System.out.println("!!!! mark pensil");
+        buttons.initGrid();
         changeView(true);
+
         for (int index = 0; index < INNER_BLOCK_SIZE; index++) {
             if (possibleSolutions.solutions[index] == 1) {
-                buttons[index].setText(String.valueOf(index + 1));
-                buttons[index].setBackgroundResource(R.drawable.selected_number);
+                System.out.println("!!!! mark pensil sell "+index);
+                buttons.setText(index, String.valueOf(index + 1));
+               buttons.setBackground(index, R.drawable.selected_number);
             } else {
-                buttons[index].setText("!");
-                buttons[index].setBackgroundResource(R.drawable.gray_shape);
+                buttons.setText(index, "!");
+                buttons.setBackground(index, R.drawable.gray_shape);
             }
         }
     }
 
     private void changeView(boolean showGrid) {
-        if (showGrid && !gridShowed) {
+        if (showGrid && !gridShowed){
+            System.out.println("!!!! change view to button");
+            number.getLayoutParams().width = empty_size;
+            gridShowed = true;
+        }
+        else
+            if (!showGrid && gridShowed){
+                System.out.println("!!!! change view to table");
+                number.getLayoutParams().width = game_field_sell_size;
+                gridShowed = false;
+            }
+     /*   if (showGrid && !gridShowed) {
             gridShowed = true;
             number.getLayoutParams().height = empty_size;
 
@@ -94,24 +125,11 @@ public class TableButton extends TableLayout {
                 }
             }
 
-        }
+        }*/
     }
 
     public void setOnClickListener(MoveListener listener) {
         this.listener = listener;
-    }
-
-
-    public void setSolutions(PossibleSolutions possibleSolutions, boolean start) {
-        if (possibleSolutions.solved) {
-            markPen(possibleSolutions.solution, start);
-        } else {
-            if (!usePen) {
-                markPensil(possibleSolutions);
-            } else {
-                markPen(0, start);
-            }
-        }
     }
 
     public void fillSell() {
@@ -122,48 +140,21 @@ public class TableButton extends TableLayout {
         number.setOnClickListener(listener);
         //  number.setTextSize(TypedValue.COMPLEX_UNIT_DIP,number.getTextSize()/9 );
         textSize = number.getTextSize() / 12;
-        this.addView(number, new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT));
+       // this.addView(number, new LayoutParams(LayoutParams.MATCH_PARENT,
+       //         LayoutParams.MATCH_PARENT));
+        row = new TableRow(this.getContext());
+        row.addView(number, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+        buttons = new PencilNumbers(this.getContext(), listener);
+        row.addView(buttons, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+
         number.getLayoutParams().width = game_field_sell_size;
         number.setPaddingRelative(0, 0, 0, 0);
         number.getLayoutParams().height = game_field_sell_size;
         number.setBackgroundResource(R.drawable.no_fill);
-    }
-
-    public void initGrid() {
-        if (!gridInited) {
-            buttons = new Button[INNER_BLOCK_SIZE];
-            TableRow row = new TableRow(this.getContext());
-            for (int index = 0; index < INNER_BLOCK_SIZE; index++) {
-                if (index % INNER_SELL_SIZE == 0) {
-                    row = new TableRow(this.getContext());
-                    createButton(index, row);
-                    this.addView(row, new LayoutParams(LayoutParams.WRAP_CONTENT,
-                            LayoutParams.WRAP_CONTENT));
-                } else {
-                    createButton(index, row);
-                }
-            }
-            gridInited = true;
-        }
-    }
-
-    private void createButton(int index, TableRow row) {
-
-        Button button = new Button(this.getContext());
-        buttons[index] = button;
-        button.setBackgroundResource(R.drawable.light_fill);
-        button.setOnClickListener(listener);
-        //button.setTextSize(number.getTextSize()/9 );
-        button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
-        row.addView(button, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-
-        button.getLayoutParams().width = game_field_inner_sell_size;
-        button.getLayoutParams().height = game_field_inner_sell_size;
-
-        //  button.setScaleType(ImageView.ScaleType.FIT_XY);
-
+        this.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.WRAP_CONTENT));
     }
 
     public void setImageResource(int resId) {
