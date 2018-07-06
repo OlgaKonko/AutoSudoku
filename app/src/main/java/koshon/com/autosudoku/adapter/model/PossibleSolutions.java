@@ -27,9 +27,8 @@ public class PossibleSolutions {
     }
 
     public void setSolution(int number, boolean pen) {
-        usePen = pen;
         if (pen){
-            if (solution== number)
+            if (solution== number+1 && usePen)
                 solution = UNMARKED;
             else
                 solution=number+1;
@@ -38,7 +37,7 @@ public class PossibleSolutions {
             if (solutions[number] == UNMARKED)
                 solutions[number] = MARKED;
         else solutions[number]= UNMARKED;
-
+        usePen = pen;
         /*
         if (solutions[number] == UNMARKED) {
 

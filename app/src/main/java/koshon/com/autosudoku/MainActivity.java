@@ -1,7 +1,9 @@
 package koshon.com.autosudoku;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,6 +13,7 @@ import android.widget.LinearLayout;
 import koshon.com.autosudoku.field.Field;
 import koshon.com.autosudoku.field.NumbersField;
 
+import static koshon.com.autosudoku.adapter.model.CurrentSudoku.createNewSudoku;
 import static koshon.com.autosudoku.field.constants.Options.usePen;
 import static koshon.com.autosudoku.field.constants.Sizes.layout_height;
 import static koshon.com.autosudoku.field.constants.Sizes.layout_width;
@@ -35,6 +38,7 @@ public class MainActivity extends Activity {
 
         penButton = findViewById(R.id.pen);
         pencilButton = findViewById(R.id.pencil);
+        setTool();
 
     }
 
@@ -56,6 +60,16 @@ public class MainActivity extends Activity {
         layout_width = size.x;
     }
 
+    public void setTool() {
+        if (usePen) {
+            pencilButton.setBackgroundResource(R.drawable.no_fill);
+            penButton.setBackgroundResource(R.drawable.set_aura);
+        } else {
+            pencilButton.setBackgroundResource(R.drawable.set_aura);
+            penButton.setBackgroundResource(R.drawable.no_fill);
+        }
+    }
+
     public void changeTool(View view) {
         if ((view == penButton) && !usePen) {
             usePen = true;
@@ -66,5 +80,11 @@ public class MainActivity extends Activity {
             pencilButton.setBackgroundResource(R.drawable.set_aura);
             penButton.setBackgroundResource(R.drawable.no_fill);
         }
+    }
+
+    public void generateNextSudoku(View view) {
+        Intent intent = new Intent(this, WaitingActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

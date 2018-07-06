@@ -7,4 +7,5 @@
     <color name="set_color">#37ffe800</color>
     <color name="set_number_color">#9e282828</color>
     <color name="given_color">#649c9fff</color>
+    <color name="solved_color">#6487ff7f</color>
 </resources>

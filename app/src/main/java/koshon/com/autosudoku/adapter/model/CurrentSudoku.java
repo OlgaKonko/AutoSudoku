@@ -8,7 +8,8 @@ public class CurrentSudoku {
     public static SudokuSolutions currentSudoku;
 
     public static void createNewSudoku() {
-        Sudoku sudoku = generateSudoku(1);
+        long seed = System.currentTimeMillis();
+        Sudoku sudoku = generateSudoku(seed);
         currentSudoku = new SudokuSolutions(sudoku);
     }
 }

@@ -38,6 +38,15 @@ public class Field extends TableLayout {
         }
     }
 
+    public void fillSolvedField() {
+        for (int x = 0; x < FIELD_SIZE; x++) {
+            for (int y = 0; y < FIELD_SIZE; y++) {
+                buttons[x][y].markSolved();
+            }
+
+        }
+    }
+
     public void drawField() {
         game_field_size = layout_width - (this.getPaddingLeft() + this.getPaddingRight());
         buttons = new TableButton[FIELD_SIZE][FIELD_SIZE];

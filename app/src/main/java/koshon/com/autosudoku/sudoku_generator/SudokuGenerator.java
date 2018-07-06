@@ -6,7 +6,7 @@ import koshon.com.autosudoku.sudoku_generator.model.Sudoku;
 
 public class SudokuGenerator {
 
-    public static Sudoku generateSudoku(int seed) {
+    public static Sudoku generateSudoku(long seed) {
         Sudoku sudoku = new Sudoku(seed);
 
         return compliteSudoku(sudoku);

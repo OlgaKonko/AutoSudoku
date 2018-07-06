@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -33,7 +34,7 @@ public class TableButton extends TableLayout {
     private boolean solved;
 
    // private boolean gridInited = false;
-    private boolean gridShowed = false;
+    public boolean gridShowed = false;
 
     MoveListener listener;
     float textSize;
@@ -50,6 +51,10 @@ public class TableButton extends TableLayout {
 
 
     public void setSolutions(PossibleSolutions possibleSolutions, boolean start) {
+        if (start){
+            markPen(possibleSolutions.solution, start);
+        }
+        else {
         if (possibleSolutions.solved) {
             System.out.println("!!!! try to mark solution pen "+possibleSolutions.solution);
             markPen(possibleSolutions.solution, start);
@@ -61,7 +66,7 @@ public class TableButton extends TableLayout {
                 System.out.println("!!!! try to mark pen"+possibleSolutions.solution);
                 markPen(possibleSolutions.solution, start);
             }
-        }
+        }}
     }
 
     public void markPen(int solution, boolean start) {
@@ -97,18 +102,28 @@ public class TableButton extends TableLayout {
         }
     }
 
+    public void markSolved() {
+                sellValueIsGiven = true;
+                number.setBackgroundResource(R.color.solved_color);
+
+
+    }
+
     private void changeView(boolean showGrid) {
         if (showGrid && !gridShowed){
-            System.out.println("!!!! change view to button");
-            number.getLayoutParams().width = empty_size;
+            System.out.println("!!!! change view to table");
+           //number.getLayoutParams().width = empty_size;
+           setDimensions(number, true);
             gridShowed = true;
         }
         else
             if (!showGrid && gridShowed){
-                System.out.println("!!!! change view to table");
-                number.getLayoutParams().width = game_field_sell_size;
+                System.out.println("!!!! change view to button");
+                //number.getLayoutParams().width = game_field_sell_size;
+                setDimensions(number, false);
                 gridShowed = false;
             }
+
      /*   if (showGrid && !gridShowed) {
             gridShowed = true;
             number.getLayoutParams().height = empty_size;
@@ -127,6 +142,15 @@ public class TableButton extends TableLayout {
 
         }*/
     }
+    private void setDimensions(Button number, boolean isEmpty){
+        android.view.ViewGroup.LayoutParams params = number.getLayoutParams();
+        if (isEmpty)
+        params.width = empty_size;
+        else
+            params.width = game_field_sell_size;
+        params.height =  game_field_sell_size;
+        number.setLayoutParams(params);
+    }
 
     public void setOnClickListener(MoveListener listener) {
         this.listener = listener;
@@ -138,7 +162,7 @@ public class TableButton extends TableLayout {
         game_field_inner_sell_size = game_field_sell_size / INNER_SELL_SIZE;
         number = new Button(this.getContext());
         number.setOnClickListener(listener);
-        //  number.setTextSize(TypedValue.COMPLEX_UNIT_DIP,number.getTextSize()/9 );
+          number.setTextSize(TypedValue.COMPLEX_UNIT_DIP,number.getTextSize()*0.7f );
         textSize = number.getTextSize() / 12;
        // this.addView(number, new LayoutParams(LayoutParams.MATCH_PARENT,
        //         LayoutParams.MATCH_PARENT));
@@ -149,9 +173,12 @@ public class TableButton extends TableLayout {
         row.addView(buttons, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
 
-        number.getLayoutParams().width = game_field_sell_size;
+
+        setDimensions(number, false);
+        //number.setTextSize(number.getTextSize()*2);
+        //number.getLayoutParams().width = game_field_sell_size;
         number.setPaddingRelative(0, 0, 0, 0);
-        number.getLayoutParams().height = game_field_sell_size;
+       //number.getLayoutParams().height = game_field_sell_size;
         number.setBackgroundResource(R.drawable.no_fill);
         this.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                 TableLayout.LayoutParams.WRAP_CONTENT));

@@ -17,5 +17,6 @@
     <string name="solution">Solution</string>
     <string name="one_more">One more</string>
     <string name="menu">Menu</string>
+    <string name="waiting">Magic cat create a new sudoku for you!</string>
 
 </resources>

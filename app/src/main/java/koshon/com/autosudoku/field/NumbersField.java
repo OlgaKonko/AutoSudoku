@@ -2,6 +2,7 @@ package koshon.com.autosudoku.field;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -50,6 +51,7 @@ public class NumbersField extends TableLayout {
     private void createButton(int x, int y, TableRow row) {
         Button button = new Button(this.getContext());
         buttons[x][y] = button;
+        button.setTextSize(TypedValue.COMPLEX_UNIT_DIP,button.getTextSize()*0.4f );
         button.setBackgroundResource(R.drawable.shape);
         button.setOnClickListener(new ChoseNumberListener(x * INNER_SELL_SIZE + y));
         row.addView(button, new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,

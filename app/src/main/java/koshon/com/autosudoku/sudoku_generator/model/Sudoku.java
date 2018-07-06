@@ -6,12 +6,12 @@ import static koshon.com.autosudoku.sudoku_generator.constants.Constants.SUDOKU_
 
 public class Sudoku {
     int[][] field;
-    public int seed;
-    int realSeed;
+    public long seed;
+    long realSeed;
     Random random;
     boolean isCorrectSudoku;
 
-    public Sudoku(int seed) {
+    public Sudoku(long seed) {
         field = new int[SUDOKU_SIZE][SUDOKU_SIZE];
         this.seed = seed;
         realSeed = seed;
