@@ -69,6 +69,20 @@ public class TableButton extends TableLayout {
         }}
     }
 
+    public void updateBackGround () {
+        if (!sellValueIsGiven) {
+            int status = currentSudoku.status[x][y];
+            if (status == 0)
+                this.setBackgroundResource(R.drawable.shape);
+            if (status == 1)
+                this.setBackgroundResource(R.drawable.light_background_shape);
+            if (status == 2)
+                this.setBackgroundResource(R.drawable.middle_background_shape);
+            if (status == 3)
+                this.setBackgroundResource(R.drawable.dark_background_shape);
+        }
+    }
+
     public void markPen(int solution, boolean start) {
         System.out.println("!!!! mark pen");
         changeView(false);

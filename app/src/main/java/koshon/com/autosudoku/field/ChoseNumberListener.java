@@ -3,7 +3,9 @@ package koshon.com.autosudoku.field;
 import android.view.View;
 
 import koshon.com.autosudoku.MainActivity;
+import koshon.com.autosudoku.MenuActivity;
 
+import static koshon.com.autosudoku.MainActivity.showVictory;
 import static koshon.com.autosudoku.adapter.model.CurrentSudoku.currentSudoku;
 import static koshon.com.autosudoku.field.constants.Options.lastButton;
 import static koshon.com.autosudoku.field.constants.Options.usePen;
@@ -20,9 +22,14 @@ public class ChoseNumberListener implements View.OnClickListener {
     public void onClick(View view) {
         currentSudoku.addSolution(lastButton.x, lastButton.y, number, usePen);
         clearPencilsMarksInBlock();
-        if (currentSudoku.isSolved){
-        MainActivity.field.fillSolvedField();}
+        if (currentSudoku.isSolved()){
+        MainActivity.showVictory();}
         lastButton.refresh();
+        checkAllColors();
+    }
+
+    private void checkAllColors(){
+        MainActivity.field.updateSellsBackground();
     }
 
     private void clearPencilsMarksInBlock(){

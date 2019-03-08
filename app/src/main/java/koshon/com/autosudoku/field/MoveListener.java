@@ -27,7 +27,7 @@ public class MoveListener implements View.OnClickListener {
             tableButton.setBackgroundResource(R.drawable.selected_sell);
             if (lastButton != null && !lastButton.sellValueIsGiven && lastButton != tableButton) {
 
-                lastButton.setBackgroundResource(R.drawable.shape);
+                lastButton.updateBackGround();
             }
             lastButton = tableButton;
         }

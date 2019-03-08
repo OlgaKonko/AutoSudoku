@@ -1,9 +1,10 @@
 package koshon.com.autosudoku;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,7 +14,6 @@ import android.widget.LinearLayout;
 import koshon.com.autosudoku.field.Field;
 import koshon.com.autosudoku.field.NumbersField;
 
-import static koshon.com.autosudoku.adapter.model.CurrentSudoku.createNewSudoku;
 import static koshon.com.autosudoku.field.constants.Options.usePen;
 import static koshon.com.autosudoku.field.constants.Sizes.layout_height;
 import static koshon.com.autosudoku.field.constants.Sizes.layout_width;
@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
     public static NumbersField numbersField;
     ImageButton penButton;
     ImageButton pencilButton;
+    public static AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,25 @@ public class MainActivity extends Activity {
         penButton = findViewById(R.id.pen);
         pencilButton = findViewById(R.id.pencil);
         setTool();
-
+        prepareAlert();
+    }
+    public static void showVictory() {
+        alert.show();
     }
 
+    private void prepareAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Класно!")
+                .setMessage("Вы сложили!")
+                .setCancelable(false)
+                .setNegativeButton("Вы умница!",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        alert = builder.create();
+    }
     private void setSized() {
         LinearLayout topLayout = findViewById(R.id.top);
         LinearLayout ceterLayout = findViewById(R.id.center);
